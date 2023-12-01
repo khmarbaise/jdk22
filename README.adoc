@@ -20,9 +20,8 @@
 :mockito-site: https://github.com/mockito/mockito
 = JDK 22 Features
 
-Just a try. It's related to this blog post:
+Just a try.
 
-* https://blog.soebes.io/posts/2023/06/2023-06-24-how-to-use-jdk21-preview-features-incubator/
 
 == State
 
