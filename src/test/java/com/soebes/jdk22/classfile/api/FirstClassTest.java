@@ -8,4 +8,14 @@ class FirstClassTest {
   void name() {
 
   }
+
+  @Test
+  void ignore() {
+    String s = "ABC";
+    try {
+      var _ = Integer.parseInt(s);
+    } catch (NumberFormatException _) {
+      System.out.println("Bad number: " + s);
+    }
+  }
 }
