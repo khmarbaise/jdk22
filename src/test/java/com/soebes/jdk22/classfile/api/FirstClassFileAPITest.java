@@ -37,6 +37,7 @@ import java.lang.classfile.attribute.SourceFileAttribute;
 import java.lang.classfile.attribute.SourceIDAttribute;
 import java.lang.classfile.attribute.SyntheticAttribute;
 import java.lang.classfile.attribute.UnknownAttribute;
+import java.lang.classfile.constantpool.PoolEntry;
 import java.nio.file.Path;
 
 class FirstClassFileAPITest {
@@ -48,6 +49,9 @@ class FirstClassFileAPITest {
       System.out.printf("Field %s%n", fm.fieldName().stringValue());
     for (MethodModel mm : cm.methods())
       System.out.printf("Method %s%n", mm.methodName().stringValue());
+    for (PoolEntry mm : cm.constantPool()) {
+      System.out.printf("ConstantPool %s %s %s%n", mm.constantPool(), mm.index(), mm.tag());
+    }
   }
 
   @Test
@@ -63,8 +67,7 @@ class FirstClassFileAPITest {
         case Interfaces i -> System.out.printf("Interfaces %s%n", i.interfaces());
         case Superclass sc -> System.out.printf("Superclass %s%n", sc.superclassEntry());
         case CompilationIDAttribute cIDA -> System.out.printf("CompilationIDAttribute %s%n", cIDA.compilationId());
-        case DeprecatedAttribute deprecatedAttribute -> {
-        }
+        case DeprecatedAttribute da -> System.out.printf("DeprecatedAttribute %s%n", da.attributeName());
         case EnclosingMethodAttribute enclosingMethodAttribute -> {
         }
         case InnerClassesAttribute innerClassesAttribute -> {

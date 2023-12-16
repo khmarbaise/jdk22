@@ -1,5 +1,9 @@
 package com.soebes.jdk22;
 
+import java.math.BigInteger;
+
+import static java.lang.System.out;
+
 public class FirstClass {
 
   private final String name;
@@ -16,5 +20,11 @@ public class FirstClass {
 
   public String getSureName() {
     return sureName;
+  }
+
+  public void x() {
+    out.println("x");
+    var bigInteger = BigInteger.valueOf(200L);
+    out.println("bigInteger = " + bigInteger);
   }
 }
