@@ -22,6 +22,7 @@
 
 Just a try.
 
+The JavaDoc of this version: https://download.java.net/java/early_access/jdk22/docs/api/
 
 == State
 
