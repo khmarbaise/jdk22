@@ -81,13 +81,6 @@
           <argLine>
             @{argLine}
             --enable-preview
-            --add-modules jdk.internal.classfile
-            --add-exports java.base/jdk.internal.classfile=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.attribute=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.components=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.constantpool=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.impl=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.instruction=ALL-UNNAMED
           </argLine>
         </configuration>
       </plugin>
@@ -102,13 +95,6 @@
             @{argLine}
             -XX:+EnableDynamicAgentLoading
             --enable-preview
-            --add-modules jdk.internal.classfile
-            --add-exports java.base/jdk.internal.classfile=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.attribute=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.components=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.constantpool=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.impl=ALL-UNNAMED
-            --add-exports java.base/jdk.internal.classfile.instruction=ALL-UNNAMED
           </argLine>
         </configuration>
       </plugin>
@@ -121,28 +107,6 @@
           <configuration>
             <debug>true</debug>
             <enablePreview>true</enablePreview>
-            <compilerArgs>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile=ALL-UNNAMED</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile=com.soebes.jdk</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile.instruction=ALL-UNNAMED</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile.instruction=com.soebes.jdk</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile.attribute=ALL-UNNAMED</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile.attribute=com.soebes.jdk</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile.components=ALL-UNNAMED</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile.components=com.soebes.jdk</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile.constantpool=ALL-UNNAMED</arg>
-              <arg>--add-exports</arg>
-              <arg>java.base/jdk.internal.classfile.constantpool=com.soebes.jdk</arg>
-            </compilerArgs>
           </configuration>
         </plugin>
       </plugins>

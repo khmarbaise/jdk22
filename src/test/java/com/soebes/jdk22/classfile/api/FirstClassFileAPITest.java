@@ -1,17 +1,17 @@
 package com.soebes.jdk22.classfile.api;
 
-import jdk.internal.classfile.ClassModel;
-import jdk.internal.classfile.Classfile;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.lang.classfile.ClassFile;
+import java.lang.classfile.ClassModel;
 import java.nio.file.Path;
 
 class FirstClassFileAPITest {
 
   @Test
   void analyseAFinalClass() throws IOException {
-    ClassModel cm = Classfile.parse(Path.of("target/classes/com/soebes/jdk21/AFinalClass.class"), Classfile.Option.processLineNumbers(true));
+    ClassModel cm = ClassFile.of().parse(Path.of("target/classes/com/soebes/jdk22/FirstClass.class"));
 
     System.out.println("cm.isModuleInfo() = " + cm.isModuleInfo());
     System.out.printf("cm.majorVersion(): %d(%d) %n", cm.majorVersion(), cm.minorVersion());
