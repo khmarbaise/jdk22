@@ -48,7 +48,7 @@ class JEP461Test {
                 groups.getLast().add(element);
               }
             },
-            (left, right) -> {
+            (_, _) -> {
               throw new UnsupportedOperationException("Cannot be parallelized");
             }
         ));

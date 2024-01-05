@@ -50,6 +50,40 @@ class FixedGroupTest {
     System.out.println("numbers = " + numbers);
     var groups = numbers.stream().gather(fixedGroup(3)).toList();
     System.out.println("groups = " + groups);
-
   }
+
+  /*
+    public static<T, A, R> Collector<T, A, R> of(Supplier<A> supplier,
+                                                 BiConsumer<A, T> accumulator,
+                                                 BinaryOperator<A> combiner,
+                                                 Function<A, R> finisher,
+                                                 Characteristics... characteristics) {
+
+   */
+//  static <T, A, R> Collector<T, A, R> fixedGroupViaCollectorOf(int size) {
+//    return Collector.of(
+//        ArrayList::new,
+//        (state, element) -> {
+//          state.add(element);
+//          if (state.size() == size) {
+//            return List.copyOf(state);
+//            state.clear();
+//          }
+//          return true;
+//        },
+//        (_, _) -> {
+//          throw new UnsupportedOperationException("Cannot be parallelized");
+//        }
+//    );
+//  }
+
+  @Test
+  void fixedGroupWithCollectorOf() {
+    List<Integer> numbers = List.of(7,1, 2, 7,1, 3, 4, 4, 1);
+    System.out.println("numbers = " + numbers);
+//    var groups = numbers.stream().collect(fixedGroupViaCollectorOf(3));
+//    System.out.println("groups = " + groups);
+  }
+
+
 }
