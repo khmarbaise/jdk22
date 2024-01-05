@@ -72,7 +72,7 @@ class IntegratorTest {
 
 
   private static <T> Gatherer<T, Void, T> no_operation() {
-    Gatherer.Integrator<Void, T,T> integrator = (_, element, downstream) -> {
+    Gatherer.Integrator<Void, T, T> integrator = (_, element, downstream) -> {
       downstream.push(element);
       return true;
     };
