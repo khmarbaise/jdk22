@@ -89,18 +89,4 @@ class DistinctByTest {
     //
     return Gatherer.ofSequential(initializer, integrator, finisher);
   }
-  /*
-     * An Integrator receives elements and processes them,
-     * optionally using the supplied state, and optionally sends incremental
-     * results downstream.
-     *
-     * @param <A> the type of state used by this integrator
-     * @param <T> the type of elements this integrator consumes
-     * @param <R> the type of results this integrator can produce
-     * @since 22
-  @FunctionalInterface
-  @PreviewFeature(feature = PreviewFeature.Feature.STREAM_GATHERERS)
-  interface Integrator<A, T, R> {
-
-   */
 }
