@@ -17,14 +17,19 @@ class DuplicatesTest {
   @Test
   void exampleFindDuplicates() {
     var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
-    long count = integers.stream().distinct().count();
-    if (count < integers.size()) {
-      System.out.println("Duplicate Elements : ");
-      integers.stream().filter(i -> Collections.frequency(integers, i) > 1)
-          .distinct().forEach(System.out::println);
-    }
+    var duplicates = findDuplicates(integers);
+    System.out.println("duplicates = " + duplicates);
   }
 
+  List<Integer> findDuplicates(List<Integer> givenList) {
+    long count = givenList.stream().distinct().count();
+    if (count < givenList.size()) {
+      return givenList.stream().filter(i -> Collections.frequency(givenList, i) > 1)
+          .distinct().toList();
+    } else {
+      return List.of();
+    }
+  }
   @Test
   void exampleFindDuplicatesWithGatherer() {
     var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
