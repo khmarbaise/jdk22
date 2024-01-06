@@ -11,7 +11,7 @@ class IntegratorTest {
 
   private static final Gatherer.Integrator<Void, Integer, Integer> noOp =
       //We could use "_" instead of "state"!
-      (_, element, downstream) -> {
+      (state, element, downstream) -> {
         downstream.push(element);
         return true;
       };
