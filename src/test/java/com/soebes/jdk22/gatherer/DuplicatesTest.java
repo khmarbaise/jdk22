@@ -33,6 +33,7 @@ class DuplicatesTest {
     assertThat(resultList).containsExactlyInAnyOrder(100, 10, 11, 5);
     System.out.println("resultList = " + resultList);
   }
+
   @Test
   void exampleFindDuplicatesWithGathererCombiner() {
     var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
@@ -63,14 +64,15 @@ class DuplicatesTest {
     //
     BinaryOperator<HashMap<T, Integer>> combiner = (s1, s2) -> {
       s1.forEach((k, v) -> {
-        var def = s2.getOrDefault(k, 0);
-        s2.put(k, v+def);
+        var s1def = s2.getOrDefault(k, 0);
+        s2.put(k, v + s1def);
       });
       return s2;
     };
     //
     return Gatherer.of(initializer, integrator, combiner, finisher);
   }
+
   static <T> Gatherer<? super T, ?, T> duplicatesWithoutCombiner() {
     Supplier<HashMap<T, Integer>> initializer = HashMap::new;
     //
@@ -81,7 +83,6 @@ class DuplicatesTest {
     };
     //
     BiConsumer<HashMap<T, Integer>, Gatherer.Downstream<? super T>> finisher = (state, downstream) -> {
-//      System.out.println("state = " + state);
       state.forEach((k, v) -> {
         if (v >= 2) {
           downstream.push(k);
