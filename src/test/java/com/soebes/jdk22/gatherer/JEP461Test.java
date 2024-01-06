@@ -33,7 +33,26 @@ class JEP461Test {
     System.out.println("result = " + result);
   }
 
-  @Test
+//  private static<T> Collector<T, ArrayList<T>, ArrayList<T>> window(int size){
+//    return Collector.of(
+//        () -> new ArrayList<List<T>>(),
+//        (groups, element) -> {
+//          if (groups.isEmpty() || groups.getLast().size() == 3) {
+//            var current = new ArrayList<Integer>();
+//            current.add(element);
+//            groups.addLast(current);
+//          } else {
+//            groups.getLast().add(element);
+//          }
+//        },
+//        (_, _) -> {
+//          throw new UnsupportedOperationException("Cannot be parallelized");
+//        }
+//    );
+//  }
+
+
+    @Test
   void example_window() {
     var result = Stream.iterate(0, i -> i + 1)
         .limit(3 * 2)
