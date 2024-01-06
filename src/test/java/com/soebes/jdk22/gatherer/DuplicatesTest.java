@@ -45,8 +45,14 @@ class DuplicatesTest {
     var resultList = integers.parallelStream().gather(duplicates()).toList();
 
     assertThat(resultList).containsExactlyInAnyOrder(100, 10, 11, 5);
+  }
 
-    System.out.println("resultList = " + resultList);
+  @Test
+  void exampleFindDuplicatesWithGathererCombinerForStrings() {
+    var integers = List.of("A", "BB", "A", "C", "BB", "DD", "EE", "F");
+    var resultList = integers.parallelStream().gather(duplicates()).toList();
+
+    assertThat(resultList).containsExactlyInAnyOrder("A", "BB");
   }
 
   // Gatherer<? super T, ?, R> gatherer
@@ -69,8 +75,8 @@ class DuplicatesTest {
     //
     BinaryOperator<HashMap<T, Integer>> combiner = (s1, s2) -> {
       s1.forEach((k, v) -> {
-        var s1def = s2.getOrDefault(k, 0);
-        s2.put(k, v + s1def);
+        var s2def = s2.getOrDefault(k, 0);
+        s2.put(k, v + s2def);
       });
       return s2;
     };
