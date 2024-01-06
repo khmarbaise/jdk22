@@ -35,3 +35,7 @@ JDK22+
 == POM Details
 
 * https://cr.openjdk.org/~asotona/8308754/classfile-api/javadoc/java.base/java/lang/classfile/package-summary.html
+
+== Ideas
+
+* Idee: partitioningBy(... mit Array an Bedingungen Groupierung anhand von Gruppen (z.B. Alter (von-bis)))

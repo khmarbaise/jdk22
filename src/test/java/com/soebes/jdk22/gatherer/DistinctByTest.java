@@ -38,9 +38,10 @@ class DistinctByTest {
   @Test
   void usingDistrinctBy() {
     var stringStream = List.of("123456", "foo", "bar", "baz", "quux", "anton", "egon", "banton");
+//    var stringStream = List.<String>of("A", "B", "C", "DD", "EE", "FFF");
     var groupingBy = stringStream.stream().collect(Collectors.groupingBy(String::length));
     var result = stringStream
-        .stream()
+        .parallelStream()
         .gather(distinctBy(String::length))
         .toList();
 
@@ -54,11 +55,38 @@ class DistinctByTest {
     var stringStream = List.of("123456", "foo", "bar", "baz", "quux", "anton", "egon", "banton");
     var result = stringStream
         .stream()
-        .gather(distinctBy(String::length))
+        .gather(distinctByWithoutFinisher(String::length))
         .toList();
 
     System.out.println("result = " + result);
   }
+
+  @Test
+  void usingDistrinctByStrange() {
+    var stringStream = List.of(500, 200, 1, 2, 3, 4, 10, 20, 1, 50, 100, 50);
+    var result = stringStream
+        .stream()
+        .gather(distinctByWithoutFinisher(Object::hashCode))
+        .toList();
+
+    System.out.println("result = " + result);
+  }
+
+  static <T, A> Gatherer<T, ?, T> distinctByWithoutFinisher(Function<? super T, ? extends A> classifier) {
+    Supplier<HashMap<A, List<T>>> initializer = HashMap::new;
+    //
+    Gatherer.Integrator<HashMap<A, List<T>>, T, T> integrator = (state, element, downstream) -> {
+      A apply = classifier.apply(element);
+      state.computeIfAbsent(apply, (_) -> new ArrayList<>()).add(element);
+      if (state.get(apply).size() == 1) {
+        downstream.push(element);
+      }
+      return true;
+    };
+    //
+    return Gatherer.ofSequential(initializer, integrator);
+  }
+
 
   /**
    * Type parameters:
@@ -79,23 +107,18 @@ class DistinctByTest {
 //// PECS Producer extends, Consumer super
 //  // Ref: https://stackoverflow.com/questions/2723397/what-is-pecs-producer-extends-consumer-super
 //  // The given type "Void" defines the type (A) for the "state" which is replaced by "_" because it's not used as all!
-  private static <T, A> Gatherer<T, ?, T> distinctBy(Function<? super T, ? extends A> classifier) {
+  static <T, A> Gatherer<T, ?, T> distinctBy(Function<? super T, ? extends A> classifier) {
     Supplier<HashMap<A, List<T>>> initializer = HashMap::new;
     //
     Gatherer.Integrator<HashMap<A, List<T>>, T, T> integrator = (state, element, downstream) -> {
       A apply = classifier.apply(element);
       state.computeIfAbsent(apply, (_) -> new ArrayList<>()).add(element);
 
-//      if (state.get(apply).size() == 1) {
-//        downstream.push(element);
-//      }
       return true;
     };
     //
     BiConsumer<HashMap<A, List<T>>, Gatherer.Downstream<? super T>> finisher = (state, downstream) -> {
-      if (!state.isEmpty()) {
-        state.forEach((_, value) -> downstream.push(value.getFirst()));
-      }
+      state.forEach((_, value) -> downstream.push(value.getLast()));
     };
     //
     return Gatherer.ofSequential(initializer, integrator, finisher);
