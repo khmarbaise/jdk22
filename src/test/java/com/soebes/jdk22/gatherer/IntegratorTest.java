@@ -41,8 +41,17 @@ class IntegratorTest {
         .gather(Gatherer.of(noOp))
         .toList();
     System.out.println("resultList = " + resultList);
-
   }
+  @Test
+  void noOperationMapping() {
+    var integerList = List.of(1, 2, 3, 4, 5, 6, 7, 8);
+
+    var resultList = integerList.stream()
+        .map(Function.identity())
+        .toList();
+    System.out.println("resultList = " + resultList);
+  }
+
   @Test
   void noOperation_Integration() {
     var integerList = List.of(1, 2, 3, 4, 5, 6, 7, 8);
