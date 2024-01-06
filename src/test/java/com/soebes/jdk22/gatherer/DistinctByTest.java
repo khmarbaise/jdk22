@@ -49,6 +49,17 @@ class DistinctByTest {
     System.out.println("groupingBy = " + groupingBy);
   }
 
+  @Test
+  void usingDistrinctByExample() {
+    var stringStream = List.of("123456", "foo", "bar", "baz", "quux", "anton", "egon", "banton");
+    var result = stringStream
+        .stream()
+        .gather(distinctBy(String::length))
+        .toList();
+
+    System.out.println("result = " + result);
+  }
+
   /**
    * Type parameters:
    * <T> – the type of input elements to the gatherer operation
