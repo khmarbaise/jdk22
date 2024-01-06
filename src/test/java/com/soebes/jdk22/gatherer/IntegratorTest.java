@@ -25,7 +25,10 @@ class IntegratorTest {
     return Gatherer.ofSequential(integrator);
   }
 
-  private static final Gatherer.Integrator<Void, Integer, Integer> noOp =
+  // <A, T, R>
+  // A state, T element, Downstream<? super R> downstream
+
+  private static final Gatherer.Integrator<Void, Integer, ? super Integer> noOp =
       //We could use "_" instead of "state"!
       (state, element, downstream) -> {
         downstream.push(element);
@@ -34,7 +37,7 @@ class IntegratorTest {
 
 
   @Test
-  void noOperation_withoutGathererOf() {
+  void noOperation_withGathererOf() {
     var integerList = List.of(1, 2, 3, 4, 5, 6, 7, 8);
 
     var resultList = integerList.stream()
@@ -60,7 +63,15 @@ class IntegratorTest {
         .gather(mapNoOp())
         .toList();
     System.out.println("resultList = " + resultList);
+  }
+  @Test
+  void noOperation_IntegrationDifferentType() {
+    var integerList = List.of("1", "2", "3", "4", "5", "6", "7", "8");
 
+    var resultList = integerList.stream()
+        .gather(mapNoOp())
+        .toList();
+    System.out.println("resultList = " + resultList);
   }
 
   // Typical mapper from T -> R function. see Stream.map(..)
