@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 class JEP461Test {
 
   record DistinctByLength(String str) {
-
     @Override public boolean equals(Object obj) {
       return obj instanceof DistinctByLength(String other)
              && str.length() == other.length();
@@ -19,12 +18,11 @@ class JEP461Test {
     @Override public int hashCode() {
       return str == null ? 0 : Integer.hashCode(str.length());
     }
-
   }
 
   @Test
   void example_one() {
-    var result = Stream.of("foo", "bar", "baz", "quux")
+    var result = Stream.of("123456", "foo", "bar", "baz", "quux", "anton", "egon", "banton")
         .map(DistinctByLength::new)
         .distinct()
         .map(DistinctByLength::str)

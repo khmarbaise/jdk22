@@ -9,6 +9,22 @@ import java.util.stream.Gatherer;
 
 class IntegratorTest {
 
+  /**
+   * @param <T> the type of input elements to the gatherer operation
+   * @param <A> the potentially mutable state type of the gatherer operation
+   *            (often hidden as an implementation detail)
+   * @param <R> the type of output elements from the gatherer operation
+   * @since 22
+   */
+  // public interface Gatherer<T, A, R> {
+  private static <T> Gatherer<T, ?, T> mapNoOp() {
+    Gatherer.Integrator<Void, T, T> integrator = (state, element, downstream) -> {
+      downstream.push(element);
+      return true;
+    };
+    return Gatherer.ofSequential(integrator);
+  }
+
   private static final Gatherer.Integrator<Void, Integer, Integer> noOp =
       //We could use "_" instead of "state"!
       (state, element, downstream) -> {
@@ -18,11 +34,21 @@ class IntegratorTest {
 
 
   @Test
-  void noOperation_Integration() {
+  void noOperation_withoutGathererOf() {
     var integerList = List.of(1, 2, 3, 4, 5, 6, 7, 8);
 
     var resultList = integerList.stream()
         .gather(Gatherer.of(noOp))
+        .toList();
+    System.out.println("resultList = " + resultList);
+
+  }
+  @Test
+  void noOperation_Integration() {
+    var integerList = List.of(1, 2, 3, 4, 5, 6, 7, 8);
+
+    var resultList = integerList.stream()
+        .gather(mapNoOp())
         .toList();
     System.out.println("resultList = " + resultList);
 
