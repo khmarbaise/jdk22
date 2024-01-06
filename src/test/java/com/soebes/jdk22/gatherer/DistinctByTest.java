@@ -30,17 +30,23 @@ class DistinctByTest {
 
   @Test
   void usingGroupingBy() {
-    var result = Stream.of("foo", "bar", "baz", "quux")
+    var result = Stream.of("123456", "foo", "bar", "baz", "quux", "anton", "egon", "banton")
         .collect(Collectors.groupingBy(String::length));
     System.out.println("result = " + result);
   }
+
   @Test
   void usingDistrinctBy() {
-    var result = Stream.of("foo", "bar", "baz", "quux")
+    var stringStream = List.of("123456", "foo", "bar", "baz", "quux", "anton", "egon", "banton");
+    var groupingBy = stringStream.stream().collect(Collectors.groupingBy(String::length));
+    var result = stringStream
+        .stream()
         .gather(distinctBy(String::length))
         .toList();
 
+    System.out.println("stringStream = " + stringStream);
     System.out.println("result = " + result);
+    System.out.println("groupingBy = " + groupingBy);
   }
 
   /**
@@ -49,11 +55,11 @@ class DistinctByTest {
    * <A> – the potentially mutable state type of the gatherer operation (often hidden as an implementation detail)
    * <R> – the type of output elements from the gatherer operation
    * ..public interface Gatherer<T, A, R>...
-   *                             ^  ^  ^
-   *                             !  !  !
-   *                             !  !  +--- Result Type
-   *                             !  +------ The State Type
-   *                             +--------- Input Type
+   * ^  ^  ^
+   * !  !  !
+   * !  !  +--- Result Type
+   * !  +------ The State Type
+   * +--------- Input Type
    **/
   // PECS Producer Extends, Consumer Super
   // The type <T> describes the consumed elements (input) or consumer
@@ -62,23 +68,16 @@ class DistinctByTest {
 //// PECS Producer extends, Consumer super
 //  // Ref: https://stackoverflow.com/questions/2723397/what-is-pecs-producer-extends-consumer-super
 //  // The given type "Void" defines the type (A) for the "state" which is replaced by "_" because it's not used as all!
-  private static <T, A> Gatherer<T, HashMap<A, List<T>>, T> distinctBy(Function<? super T, ? extends A> classifier) {
-    // result={3=[foo,bar,baz], 4=[quux]}
-    // HashMap<Integer, List<String>> ...
-    //
+  private static <T, A> Gatherer<T, ?, T> distinctBy(Function<? super T, ? extends A> classifier) {
     Supplier<HashMap<A, List<T>>> initializer = HashMap::new;
     //
     Gatherer.Integrator<HashMap<A, List<T>>, T, T> integrator = (state, element, downstream) -> {
       A apply = classifier.apply(element);
-      if (state.containsKey(apply)) {
-        state.get(apply).add(element);
-      } else {
-        List<T> lists = new ArrayList<>();
-        lists.add(element);
-        state.put(apply, lists);
-      }
-      //Need to reconsider?
-//      downstream.push(element);
+      state.computeIfAbsent(apply, (_) -> new ArrayList<>()).add(element);
+
+//      if (state.get(apply).size() == 1) {
+//        downstream.push(element);
+//      }
       return true;
     };
     //
