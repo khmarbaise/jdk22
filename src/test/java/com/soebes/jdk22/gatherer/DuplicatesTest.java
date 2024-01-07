@@ -49,9 +49,7 @@ class DuplicatesTest {
     state.put(element, orDefault + 1);
   };
   BinaryOperator<HashMap<Integer, Integer>> combiner = (s1, s2) -> {
-    s1.forEach((k, v) -> {
-      s2.put(k, v + s2.getOrDefault(k, 0));
-    });
+    s1.forEach((k, v) -> s2.put(k, v + s2.getOrDefault(k, 0)));
     return s2;
   };
   Function<HashMap<Integer, Integer>, List<Integer>> finisher = (acc) -> {
