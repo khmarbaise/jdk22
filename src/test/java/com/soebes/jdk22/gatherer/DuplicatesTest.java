@@ -86,8 +86,7 @@ class DuplicatesTest {
     Supplier<HashMap<RESULT, Integer>> supplier = HashMap::new;
     // This will see each element from the stream.
     BiConsumer<HashMap<RESULT, Integer>, RESULT> accumulator = (state, element) -> {
-      var orDefault = state.getOrDefault(element, 0);
-      state.put(element, orDefault + 1);
+      state.put(element, state.getOrDefault(element, 0) + 1);
     };
     // This the part which combines in cases of parallelStream() the results.
     BinaryOperator<HashMap<RESULT, Integer>> combiner = (s1, s2) -> {
