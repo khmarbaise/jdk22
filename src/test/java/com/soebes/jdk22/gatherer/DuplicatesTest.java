@@ -77,6 +77,52 @@ class DuplicatesTest {
 
   }
 
+
+  // Collector<? super T, A, R> collector
+  // The "?" can be replaced by the type of the Supplier which represents the "memory".
+  // but that is not required.
+  static <RESULT> Collector<RESULT, ?, List<RESULT>> duplicatesWithCollectorOf() {
+    // This creates the internal memory
+    Supplier<HashMap<RESULT, Integer>> supplier = HashMap::new;
+    // This will see each element from the stream.
+    BiConsumer<HashMap<RESULT, Integer>, RESULT> accumulator = (state, element) -> {
+      var orDefault = state.getOrDefault(element, 0);
+      state.put(element, orDefault + 1);
+    };
+    // This the part which combines in cases of parallelStream() the results.
+    BinaryOperator<HashMap<RESULT, Integer>> combiner = (s1, s2) -> {
+      s1.forEach((k, v) -> s2.put(k, v + s2.getOrDefault(k, 0)));
+      return s2;
+    };
+    // The finisher is the only part which emit the resulting type. That means this
+    // controls the resulting type.
+    Function<HashMap<RESULT, Integer>, List<RESULT>> finisher = (acc) -> {
+      List<RESULT> duplicateList = acc.entrySet().stream().filter(e -> e.getValue() >= 2).map(Map.Entry::getKey).toList();
+      return List.copyOf(duplicateList);
+    };
+    return Collector.of(
+        supplier, // A (supplier)
+        accumulator,// A,T (accumulator)
+        combiner, // A (combiner),
+        finisher// A,R (finisher)
+    );
+  }
+
+  @Test
+  void exampleFindDuplicatedWithConvenience() {
+    var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
+
+    // <R, A> R collect(Collector<? super T, A, R> collector);
+    var resultList = integers.stream()
+        .collect(duplicatesWithCollectorOf());
+
+    assertThat(resultList).containsExactlyInAnyOrder(100, 10, 11, 5);
+    System.out.println("resultList = " + resultList);
+
+  }
+
+
+
   @Test
   void exampleFindDuplicatesWithGathererCombiner() {
     var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
