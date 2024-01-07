@@ -19,6 +19,16 @@ class SlidingWindowTest {
     System.out.println("resultList = " + resultList);
   }
 
+  @Test
+  void noOperation_withGathererOfSequentialDifferentType() {
+    var integerList = List.of(List.of(1,2), List.of(2,3), List.of(5,6));
+
+    var resultList = integerList.stream()
+        .gather(slidingWindow(2))
+        .toList();
+    System.out.println("resultList = " + resultList);
+  }
+
   static <T> Gatherer<T, ?, List<T>> slidingWindow(int windowSize) {
     //
     Supplier<List<T>> initializer = () -> new ArrayList<>(windowSize);
