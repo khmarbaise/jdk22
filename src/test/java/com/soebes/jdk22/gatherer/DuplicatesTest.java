@@ -100,8 +100,7 @@ class DuplicatesTest {
     Supplier<HashMap<T, Integer>> initializer = HashMap::new;
     //
     Gatherer.Integrator<HashMap<T, Integer>, T, T> integrator = (state, element, _) -> {
-      var orDefault = state.getOrDefault(element, 0);
-      state.put(element, orDefault + 1);
+      state.put(element, state.getOrDefault(element, 0) + 1);
       return true;
     };
     //
@@ -114,10 +113,7 @@ class DuplicatesTest {
     };
     //
     BinaryOperator<HashMap<T, Integer>> combiner = (s1, s2) -> {
-      s1.forEach((k, v) -> {
-        var s2def = s2.getOrDefault(k, 0);
-        s2.put(k, v + s2def);
-      });
+      s1.forEach((k, v) -> s2.put(k, v + s2.getOrDefault(k, 0)));
       return s2;
     };
     //
