@@ -110,7 +110,7 @@ class DistinctByTest {
   static <T, A> Gatherer<T, ?, T> distinctBy(Function<? super T, ? extends A> classifier) {
     Supplier<HashMap<A, List<T>>> initializer = HashMap::new;
     //
-    Gatherer.Integrator<HashMap<A, List<T>>, T, T> integrator = (state, element, downstream) -> {
+    Gatherer.Integrator<HashMap<A, List<T>>, T, T> integrator = (state, element, _) -> {
       A apply = classifier.apply(element);
       state.computeIfAbsent(apply, (_) -> new ArrayList<>()).add(element);
 
