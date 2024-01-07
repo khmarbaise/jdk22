@@ -24,9 +24,9 @@ class FixedGroupTest {
   //                          !      !           +---- Output elements
   //                          !      !           !
   //                          v      v           v
-  static private <T> Gatherer<T, ArrayList<T>, List<T>> fixedGroup(int windowSize) {
-    Supplier<ArrayList<T>> initializer = ArrayList::new;
-    Gatherer.Integrator<ArrayList<T>, T, List<T>> integrator = (state, element, downstream) -> {
+  static private <T> Gatherer<T, List<T>, List<T>> fixedGroup(int windowSize) {
+    Supplier<List<T>> initializer = ArrayList::new;
+    Gatherer.Integrator<List<T>, T, List<T>> integrator = (state, element, downstream) -> {
       state.add(element);
       if (state.size() == windowSize) {
         downstream.push(List.copyOf(state));
@@ -35,7 +35,7 @@ class FixedGroupTest {
       return true;
     };
 
-    BiConsumer<ArrayList<T>, Gatherer.Downstream<? super List<T>>> finisher = (state, downstream) -> {
+    BiConsumer<List<T>, Gatherer.Downstream<? super List<T>>> finisher = (state, downstream) -> {
       if (!state.isEmpty()) {
         downstream.push(List.copyOf(state));
       }
