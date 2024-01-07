@@ -151,7 +151,10 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
         .sorted(Map.Entry.comparingByKey(AgeRange.comparator()))
         .forEach((entry) -> {
           System.out.println(entry.getKey());
-          entry.getValue().forEach(p -> System.out.println("  " + p));
+          entry.getValue()
+              .stream()
+              .sorted(Comparator.comparing(Person::name))
+              .forEachOrdered(p -> System.out.println("  " + p));
         });
   }
 
@@ -172,7 +175,10 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
         .sorted(Map.Entry.comparingByKey(AgeRange.comparator()))
         .forEach((entry) -> {
           System.out.println(entry.getKey());
-          entry.getValue().forEach(p -> System.out.println("  " + p));
+          entry.getValue()
+              .stream()
+              .sorted(Comparator.comparing(Person::name))
+              .forEachOrdered(p -> System.out.println("  " + p));
         });
 
   }
