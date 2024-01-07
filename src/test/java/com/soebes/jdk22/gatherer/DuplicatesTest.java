@@ -5,9 +5,12 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Gatherer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -30,6 +33,7 @@ class DuplicatesTest {
       return List.of();
     }
   }
+
   @Test
   void exampleFindDuplicatesWithGatherer() {
     var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
@@ -37,6 +41,42 @@ class DuplicatesTest {
 
     assertThat(resultList).containsExactlyInAnyOrder(100, 10, 11, 5);
     System.out.println("resultList = " + resultList);
+  }
+
+  Supplier<HashMap<Integer, Integer>> supplier = HashMap::new;
+  BiConsumer<HashMap<Integer, Integer>, Integer> accumulator = (state, element) -> {
+    var orDefault = state.getOrDefault(element, 0);
+    state.put(element, orDefault + 1);
+  };
+  BinaryOperator<HashMap<Integer, Integer>> combiner = (s1, s2) -> {
+    s1.forEach((k, v) -> {
+      s2.put(k, v + s2.getOrDefault(k, 0));
+    });
+    return s2;
+  };
+  Function<HashMap<Integer, Integer>, List<Integer>> finisher = (acc) -> {
+    var duplicateList = acc.entrySet().stream().filter(e -> e.getValue() >= 2).map(Map.Entry::getKey).toList();
+    return List.copyOf(duplicateList);
+  };
+
+  @Test
+  void exampleFindDuplicatedWithCollectorOf() {
+    var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
+
+    // <R, A> R collect(Collector<? super T, A, R> collector);
+    List<Integer> resultList = integers.stream()
+        .collect(
+            Collector.of(
+                supplier, // A (supplier)
+                accumulator,// A,T (accumulator)
+                combiner, // A (combiner),
+                finisher// A,R (finisher)
+            )
+        );
+
+    assertThat(resultList).containsExactlyInAnyOrder(100, 10, 11, 5);
+    System.out.println("resultList = " + resultList);
+
   }
 
   @Test
