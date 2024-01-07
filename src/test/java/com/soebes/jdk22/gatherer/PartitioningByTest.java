@@ -140,7 +140,7 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
         (acc, person) -> {
           var aRange = AGE_RANGES.stream()
               .filter(personInRange(person))
-              .findAny()
+              .findFirst()
               .orElseThrow(() -> new IllegalStateException("Person does not fit in any given range person:" + person));
           acc.computeIfAbsent(aRange, (_) -> new ArrayList<>()).add(person);
         },
@@ -167,7 +167,7 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
         .collect(Collectors.groupingBy(person ->
             AGE_RANGES.stream()
                 .filter(personInRange(person))
-                .findAny()
+                .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Person does not fit in any given range person:" + person))
         ));
     collect.entrySet()
