@@ -18,7 +18,7 @@ class IntegratorTest {
    */
   // public interface Gatherer<T, A, R> {
   private static <T> Gatherer<T, ?, T> mapNoOp() {
-    Gatherer.Integrator<Void, T, T> integrator = (state, element, downstream) -> {
+    Gatherer.Integrator<Void, T, T> integrator = (_, element, downstream) -> {
       downstream.push(element);
       return true;
     };
@@ -30,7 +30,7 @@ class IntegratorTest {
 
   private static final Gatherer.Integrator<Void, Integer, ? super Integer> noOp =
       //We could use "_" instead of "state"!
-      (state, element, downstream) -> {
+      (_, element, downstream) -> {
         downstream.push(element);
         return true;
       };
