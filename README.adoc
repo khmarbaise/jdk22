@@ -36,6 +36,14 @@ JDK22+
 
 * https://cr.openjdk.org/~asotona/8308754/classfile-api/javadoc/java.base/java/lang/classfile/package-summary.html
 
+== Data Samples
+
+I have used data samples based on this page:
+
+* https://www.thespreadsheetguru.com/sample-data/
+
 == Ideas
 
-* Idee: partitioningBy(... mit Array an Bedingungen Groupierung anhand von Gruppen (z.B. Alter (von-bis)))
+* Idee:
+** partitioningBy(... mit Array an Bedingungen Groupierung anhand von Gruppen (z.B. Alter (von-bis)))
+** Index mit in Stream aufnehmen?? mal sehen, ob das geht?
