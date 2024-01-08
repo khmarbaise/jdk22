@@ -93,7 +93,7 @@ class DuplicatesTest {
       s1.forEach((k, v) -> s2.put(k, v + s2.getOrDefault(k, 0)));
       return s2;
     };
-    // The finisher is the only part which emit the resulting type. That means this
+    // The finisher is the only part which emits the resulting type. That means this
     // controls the resulting type.
     Function<HashMap<RESULT, Integer>, List<RESULT>> finisher = (acc) -> {
       List<RESULT> duplicateList = acc.entrySet().stream().filter(e -> e.getValue() >= 2).map(Map.Entry::getKey).toList();
@@ -139,25 +139,25 @@ class DuplicatesTest {
   }
 
   // Gatherer<? super T, ?, R> gatherer
-  static <T> Gatherer<? super T, ?, T> duplicates() {
-    Supplier<HashMap<T, Integer>> initializer = HashMap::new;
+  static <ELEMENT> Gatherer<? super ELEMENT, ?, ELEMENT> duplicates() {
+    Supplier<HashMap<ELEMENT, Integer>> initializer = HashMap::new;
     //
-    Gatherer.Integrator<HashMap<T, Integer>, T, T> integrator = (state, element, _) -> {
+    Gatherer.Integrator<HashMap<ELEMENT, Integer>, ELEMENT, ELEMENT> integrator = (state, element, _) -> {
       state.put(element, state.getOrDefault(element, 0) + 1);
       return true;
     };
     //
-    BiConsumer<HashMap<T, Integer>, Gatherer.Downstream<? super T>> finisher = (state, downstream) -> {
+    BinaryOperator<HashMap<ELEMENT, Integer>> combiner = (s1, s2) -> {
+      s1.forEach((k, v) -> s2.put(k, v + s2.getOrDefault(k, 0)));
+      return s2;
+    };
+    //
+    BiConsumer<HashMap<ELEMENT, Integer>, Gatherer.Downstream<? super ELEMENT>> finisher = (state, downstream) -> {
       state.forEach((k, v) -> {
         if (v >= 2) {
           downstream.push(k);
         }
       });
-    };
-    //
-    BinaryOperator<HashMap<T, Integer>> combiner = (s1, s2) -> {
-      s1.forEach((k, v) -> s2.put(k, v + s2.getOrDefault(k, 0)));
-      return s2;
     };
     //
     return Gatherer.of(initializer, integrator, combiner, finisher);
