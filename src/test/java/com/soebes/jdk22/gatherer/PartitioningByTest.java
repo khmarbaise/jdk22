@@ -107,6 +107,7 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
 
   List<Line> readLinesFromFile(Path csvFile) throws IOException {
     var employeeSampleData = Path.of("src/test/resources/EmployeeSampleData.csv");
+    //We had to read the file in UTF_16 interestingly.
     try (Stream<String> lines = Files.lines(employeeSampleData, StandardCharsets.UTF_16)) {
       return lines.filter(line -> !line.trim().isEmpty()).map(Line::new).toList();
     }
