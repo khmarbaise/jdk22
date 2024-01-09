@@ -5,8 +5,12 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.BinaryOperator;
+import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Gatherer;
+import java.util.stream.IntStream;
 
 class FixedGroupTest {
 
@@ -45,45 +49,60 @@ class FixedGroupTest {
   }
 
   @Test
-  void name() {
+  void fixedGroupWindowsWithGatherer() {
     List<Integer> numbers = List.of(7,1, 2, 7,1, 3, 4, 4, 1);
     System.out.println("numbers = " + numbers);
     var groups = numbers.stream().gather(fixedGroup(3)).toList();
     System.out.println("groups = " + groups);
   }
 
-  /*
-    public static<T, A, R> Collector<T, A, R> of(Supplier<A> supplier,
-                                                 BiConsumer<A, T> accumulator,
-                                                 BinaryOperator<A> combiner,
-                                                 Function<A, R> finisher,
-                                                 Characteristics... characteristics) {
 
-   */
-//  static <T, A, R> Collector<T, A, R> fixedGroupViaCollectorOf(int size) {
-//    return Collector.of(
-//        ArrayList::new,
-//        (state, element) -> {
-//          state.add(element);
-//          if (state.size() == size) {
-//            return List.copyOf(state);
-//            state.clear();
-//          }
-//          return true;
-//        },
-//        (_, _) -> {
-//          throw new UnsupportedOperationException("Cannot be parallelized");
-//        }
-//    );
-//  }
+  static <T> Collector<T, ?, List<List<T>>> fixedWindow(int size) {
+    class InternalState {
+      List<T> current;
+      List<List<T>> state;
+
+      InternalState() {
+        this.current = new ArrayList<>(size);
+        this.state = new ArrayList<>();
+      }
+    }
+    //
+    Supplier<InternalState> supplier = InternalState::new;
+    //
+    BiConsumer<InternalState, T> accumulator = (state, element) -> {
+      state.current.add(element);
+      if (state.current.size() == size) {
+        state.state.add(state.current);
+        state.current = new ArrayList<>(size);
+      }
+    };
+    //
+    BinaryOperator<InternalState> combiner = (lhs, rhs) -> {
+      lhs.state.addAll(rhs.state);
+      return lhs;
+    };
+    //
+    Function<InternalState, List<List<T>>> finisher = (acc) -> {
+      if (!acc.current.isEmpty()) {
+        acc.state.add(acc.current);
+      }
+      return acc.state;
+    };
+
+    return Collector.of(
+        supplier, // A (supplier)
+        accumulator,// A,T (accumulator)
+        combiner, // A (combiner),
+        finisher// A,R (finisher)
+    );
+  }
+
 
   @Test
   void fixedGroupWithCollectorOf() {
-    List<Integer> numbers = List.of(7,1, 2, 7,1, 3, 4, 4, 1);
-    System.out.println("numbers = " + numbers);
-//    var groups = numbers.stream().collect(fixedGroupViaCollectorOf(3));
-//    System.out.println("groups = " + groups);
+    var resultList = IntStream.range(0, 11).boxed().collect(fixedWindow(3));
+    System.out.println("resultList = " + resultList);
   }
-
 
 }

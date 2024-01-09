@@ -9,14 +9,6 @@ import java.util.stream.Gatherer;
 
 class IntegratorTest {
 
-  /**
-   * @param <T> the type of input elements to the gatherer operation
-   * @param <A> the potentially mutable state type of the gatherer operation
-   *            (often hidden as an implementation detail)
-   * @param <R> the type of output elements from the gatherer operation
-   * @since 22
-   */
-  // public interface Gatherer<T, A, R> {
   private static <T> Gatherer<T, ?, T> mapNoOp() {
     Gatherer.Integrator<Void, T, T> integrator = (_, element, downstream) -> {
       downstream.push(element);
