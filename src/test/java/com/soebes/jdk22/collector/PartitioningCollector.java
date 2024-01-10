@@ -47,7 +47,6 @@ public class PartitioningCollector<T> implements Collector<T, List<List<T>>, Lis
     return (lhs, rhs) -> {
       List<List<T>> result = new ArrayList<>();
       result.addAll(lhs);
-      result.addAll(lhs);
       return result;
     };
   }
