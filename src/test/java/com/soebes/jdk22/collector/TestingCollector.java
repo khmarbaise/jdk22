@@ -1,15 +1,15 @@
 package com.soebes.jdk22.collector;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
-
-import static java.util.Collections.emptySet;
 
 /**
  * https://stackoverflow.com/questions/30995763/java-8-partition-list
@@ -20,10 +20,13 @@ public class TestingCollector<T> implements Collector<T, List<List<T>>, List<Lis
 
   private int counter;
 
+  private ReentrantLock lock;
+
   public TestingCollector(int blockSize) {
     this.counter = 0;
     this.blockSize = blockSize;
     System.out.println("TestingCollector.TestingCollector");
+    this.lock = new ReentrantLock();
   }
 
   @Override
@@ -74,6 +77,6 @@ public class TestingCollector<T> implements Collector<T, List<List<T>>, List<Lis
 
   @Override
   public Set<Characteristics> characteristics() {
-    return emptySet();
+    return EnumSet.of(Collector.Characteristics.UNORDERED);
   }
 }

@@ -2,16 +2,26 @@ package com.soebes.jdk22.collector;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.stream.IntStream;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 class TestingCollectorTest {
 
   static <T> TestingCollector<T> partitioningBySize(int size) {
-    return new TestingCollector<T>(size);
+    return new TestingCollector<>(size);
   }
   @Test
-  void name() {
+  void usingNonParallel() {
     var result = IntStream.range(0, 10).boxed().collect(partitioningBySize(3));
+    assertThat(result).contains(List.of(0, 1, 2), List.of(3, 4, 5), List.of(6, 7, 8), List.of(9));
+    System.out.println("result = " + result);
+  }
+  @Test
+  void parallel() {
+    var result = IntStream.range(0, 10).boxed().parallel().collect(partitioningBySize(3));
+    assertThat(result).contains(List.of(0, 1, 2), List.of(3, 4, 5), List.of(6, 7, 8), List.of(9));
     System.out.println("result = " + result);
   }
 
