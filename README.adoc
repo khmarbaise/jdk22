@@ -42,6 +42,11 @@ I have used data samples based on this page:
 
 * https://www.thespreadsheetguru.com/sample-data/
 
+> All the example data is free for you to use any way you’d like. I have saved the data in both an Excel format (.xlsx)
+and a comma-separated values format (.csv).
+
+
+
 == Ideas
 
 * Idee:
