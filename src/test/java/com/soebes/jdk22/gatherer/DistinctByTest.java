@@ -36,7 +36,7 @@ class DistinctByTest {
   }
 
   @Test
-  void usingDistrinctBy() {
+  void usingDistinctBy() {
     var stringStream = List.of("123456", "foo", "bar", "baz", "quux", "anton", "egon", "banton");
 //    var stringStream = List.<String>of("A", "B", "C", "DD", "EE", "FFF");
     var groupingBy = stringStream.stream().collect(Collectors.groupingBy(String::length));
@@ -51,7 +51,7 @@ class DistinctByTest {
   }
 
   @Test
-  void usingDistrinctByExample() {
+  void usingDistinctByExample() {
     var stringStream = List.of("123456", "foo", "bar", "baz", "quux", "anton", "egon", "banton");
     var result = stringStream
         .stream()
@@ -62,7 +62,7 @@ class DistinctByTest {
   }
 
   @Test
-  void usingDistrinctByStrange() {
+  void usingDistinctByStrange() {
     var stringStream = List.of(500, 200, 1, 2, 3, 4, 10, 20, 1, 50, 100, 50);
     var result = stringStream
         .stream()
@@ -113,7 +113,6 @@ class DistinctByTest {
     Gatherer.Integrator<HashMap<A, List<T>>, T, T> integrator = (state, element, _) -> {
       A apply = classifier.apply(element);
       state.computeIfAbsent(apply, (_) -> new ArrayList<>()).add(element);
-
       return true;
     };
     //
