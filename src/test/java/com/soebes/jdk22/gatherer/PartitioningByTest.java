@@ -173,7 +173,7 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
     collect.entrySet()
         .stream()
         .sorted(Map.Entry.comparingByKey(AgeRange.comparator()))
-        .forEach((entry) -> {
+        .forEachOrdered((entry) -> {
           System.out.println(entry.getKey());
           entry.getValue()
               .stream()
