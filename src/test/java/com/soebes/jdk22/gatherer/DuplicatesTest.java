@@ -11,6 +11,7 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.Gatherer;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,6 +22,12 @@ class DuplicatesTest {
   void exampleFindDuplicates() {
     var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
     var duplicates = findDuplicates(integers);
+    System.out.println("duplicates = " + duplicates);
+  }
+  @Test
+  void exampleFindDuplicatesViaStream() {
+    var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
+    var duplicates = findDuplicatesViaStreamAndEntrySet(integers);
     System.out.println("duplicates = " + duplicates);
   }
 
@@ -34,6 +41,14 @@ class DuplicatesTest {
     }
   }
 
+  List<Integer> findDuplicatesViaStreamAndEntrySet(List<Integer> givenlist) {
+    return givenlist.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
+        .entrySet().stream()
+        .filter(s -> s.getValue() > 1)
+        .map(Map.Entry::getKey)
+        .toList();
+
+  }
   @Test
   void exampleFindDuplicatesWithGatherer() {
     var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
