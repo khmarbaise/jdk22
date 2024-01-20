@@ -36,7 +36,7 @@ class PartitioningByTest {
   // EEID,Full Name,Job Title,Department,Business Unit,Gender,Ethnicity,Age,Hire Date,Annual Salary,Bonus %,Country,City,Exit Date
   //E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016,"$141,604 ",15% ,United States,Seattle,10/16/2021
   record Employee(String eeid, String name, String title, String department, String businessUnit, String gender,
-                  String ethnicity, int age, LocalDate hireDate, int anualSalary, float bonus, String country,
+                  String ethnicity, int age, LocalDate hireDate, int annualSalary, float bonus, String country,
                   String city, LocalDate exitDate) {
   }
 
