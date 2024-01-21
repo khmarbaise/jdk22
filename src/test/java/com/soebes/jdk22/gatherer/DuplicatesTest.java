@@ -4,11 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.BinaryOperator;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -40,6 +43,20 @@ class DuplicatesTest {
       return List.of();
     }
   }
+
+  public static <T, U> Predicate<T> distinctByFieldGeneral(Function<? super T, ? extends U> fieldExtractor) {
+    Set<U> seen = new HashSet<>();
+
+    return element -> !seen.add(fieldExtractor.apply(element));
+  }
+
+  @Test
+  void exampleFindDuplicatesDistinctByFieldGeneral() {
+    var integers = List.of(100, 1, 10, 11, 5, 10, 11, 5, 100, 75, 78, 90);
+    var duplicates = integers.stream().filter(distinctByFieldGeneral(s -> s)).toList();
+    System.out.println("duplicates = " + duplicates);
+  }
+
 
   List<Integer> findDuplicatesViaStreamAndEntrySet(List<Integer> givenlist) {
     return givenlist.stream().collect(Collectors.groupingBy(Function.identity(), Collectors.counting()))
