@@ -33,7 +33,7 @@ class GathererTest {
     List<Integer> numbers = List.of(7, 1, 2, 7, 1, 3, 4, 4, 1);
     List<Integer> unique = numbers.stream().distinct().toList();
     List<Integer> duplicates = numbers.stream().gather(duplicates()).toList();
-    System.out.println(duplicates);
+    System.out.println("duplicates = " + duplicates);
     System.out.println("unique = " + unique);
     System.out.println("numbers = " + numbers);
   }
