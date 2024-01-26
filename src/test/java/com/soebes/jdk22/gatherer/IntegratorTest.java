@@ -10,10 +10,7 @@ import java.util.stream.Gatherer;
 class IntegratorTest {
 
   private static <T> Gatherer<T, ?, T> mapNoOp() {
-    Gatherer.Integrator<Void, T, T> integrator = (_, element, downstream) -> {
-      downstream.push(element);
-      return true;
-    };
+    Gatherer.Integrator<Void, T, T> integrator = (_, element, downstream) -> downstream.push(element);
     return Gatherer.ofSequential(integrator);
   }
 
