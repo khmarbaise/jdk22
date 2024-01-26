@@ -10,12 +10,14 @@ import java.util.stream.Stream;
 class JEP461Test {
 
   record DistinctByLength(String str) {
-    @Override public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
       return obj instanceof DistinctByLength(String other)
              && str.length() == other.length();
     }
 
-    @Override public int hashCode() {
+    @Override
+    public int hashCode() {
       return str == null ? 0 : Integer.hashCode(str.length());
     }
   }
@@ -50,7 +52,7 @@ class JEP461Test {
 //  }
 
 
-    @Test
+  @Test
   void example_window() {
     var result = Stream.iterate(0, i -> i + 1)
         .limit(3 * 2)
