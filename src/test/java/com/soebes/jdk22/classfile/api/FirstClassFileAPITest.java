@@ -68,7 +68,8 @@ class FirstClassFileAPITest {
         case Superclass sc -> System.out.printf("Superclass %s%n", sc.superclassEntry());
         case CompilationIDAttribute cIDA -> System.out.printf("CompilationIDAttribute %s%n", cIDA.compilationId());
         case DeprecatedAttribute da -> System.out.printf("DeprecatedAttribute %s%n", da.attributeName());
-        case EnclosingMethodAttribute enclosingMethodAttribute -> {
+        case EnclosingMethodAttribute ema -> {
+          System.out.printf("EnclosingMethodAttribute %s%n", ema.enclosingMethod());
         }
         case InnerClassesAttribute innerClassesAttribute -> {
         }
