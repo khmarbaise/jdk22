@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BiConsumer;
 import java.util.stream.Collector;
 import java.util.stream.Stream;
 
@@ -52,21 +53,23 @@ class JEP461Test {
 //  }
 
 
+   BiConsumer<? super ArrayList<List<Integer>>, ? super Integer> accumulator = (state, element) -> {
+    if (state.isEmpty() || state.getLast().size() == 3) {
+      var current = new ArrayList<Integer>();
+      current.add(element);
+      state.addLast(current);
+    } else {
+      state.getLast().add(element);
+    }
+  };
+
   @Test
   void example_window() {
     var result = Stream.iterate(0, i -> i + 1)
         .limit(3 * 2)
         .collect(Collector.of(
-            () -> new ArrayList<List<Integer>>(),
-            (groups, element) -> {
-              if (groups.isEmpty() || groups.getLast().size() == 3) {
-                var current = new ArrayList<Integer>();
-                current.add(element);
-                groups.addLast(current);
-              } else {
-                groups.getLast().add(element);
-              }
-            },
+            ArrayList::new,
+            accumulator,
             (_, _) -> {
               throw new UnsupportedOperationException("Cannot be parallelized");
             }
