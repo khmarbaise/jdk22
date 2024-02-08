@@ -29,6 +29,7 @@ public record Countdown(List<Integer> ints, int target) {
       element -> Gatherer.ofSequential(
           () -> new Object() {
             Element previous;
+
             {
               this.previous = element;
             }
@@ -74,6 +75,7 @@ public record Countdown(List<Integer> ints, int target) {
   enum Operator {
     ADD, SUB, MULT, DIV
   }
+
   sealed interface Operation extends Element permits Add, Sub, Mult, Div {
     static Operation of(Operator operator, Element left, Element right) {
       return switch (operator) {
