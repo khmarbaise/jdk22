@@ -266,8 +266,7 @@ public record Countdown(List<Integer> ints, int target) {
 
     var solver = new CountdownSolver(elements, target);
     var solutions = solver.solve();
-    Collection<String> composedSolutions = composeResult(solutions);
-    return composedSolutions;
+    return composeResult(solutions);
   }
 
   public static void main(String... args) {
