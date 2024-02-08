@@ -15,8 +15,8 @@ import java.util.stream.Stream;
 
 /**
  * This is the code used for the episode 22 of the JEP Café series, on Data Oriented Programming.
- * You can watch this episode here: https://youtu.be/Y2pmZlP-cOU
- * The full JEP Café series is here: https://www.youtube.com/playlist?list=PLX8CzqL3ArzV4BpOzLanxd4bZr46x5e87
+ * You can watch this episode here: <a href="https://youtu.be/Y2pmZlP-cOU">https://youtu.be/Y2pmZlP-cOU</a>
+ * The full JEP Café series is here: <a href="https://www.youtube.com/playlist?list=PLX8CzqL3ArzV4BpOzLanxd4bZr46x5e87">https://www.youtube.com/playlist?list=PLX8CzqL3ArzV4BpOzLanxd4bZr46x5e87</a>
  */
 public record Countdown(List<Integer> ints, int target) {
 
