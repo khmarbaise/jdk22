@@ -46,7 +46,7 @@ public class PartitioningCollector<T> implements Collector<T, List<List<T>>, Lis
   public BinaryOperator<List<List<T>>> combiner() {
     return (lhs, rhs) -> {
       List<List<T>> result = new ArrayList<>();
-      result.addAll(lhs);
+      lhs.addAll(rhs);
       return result;
     };
   }

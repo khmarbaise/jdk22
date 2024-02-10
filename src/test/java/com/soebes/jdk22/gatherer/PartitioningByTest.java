@@ -20,6 +20,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.util.function.Predicate.not;
+
 class PartitioningByTest {
 
   static final List<AgeRange> AGE_RANGES = List.of(
@@ -105,10 +107,12 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
     return employees.stream().map(employee -> new Person(employee.name(), employee.age())).toList();
   }
 
+  private final Predicate<String> emptyLine = l -> l.trim().isEmpty();
+
   List<Line> readLinesFromFile(Path csvFile) throws IOException {
     //We have to read the file in UTF_16!
     try (Stream<String> lines = Files.lines(csvFile, StandardCharsets.UTF_16)) {
-      return lines.filter(line -> !line.trim().isEmpty()).map(Line::new).toList();
+      return lines.filter(not(emptyLine)).map(Line::new).toList();
     }
   }
 
