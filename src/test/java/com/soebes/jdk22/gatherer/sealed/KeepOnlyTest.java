@@ -3,6 +3,7 @@ package com.soebes.jdk22.gatherer.sealed;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Gatherer;
 
 class KeepOnlyTest {
@@ -47,10 +48,44 @@ class KeepOnlyTest {
         };
     return Gatherer.ofSequential(integrator);
   }
+  static <T> Gatherer<T, ?, T> keepOnlyFirst(Class<? extends Element> clazz) {
+    Gatherer.Integrator<Void, T, T> integrator =
+        (_, element, downstream) -> {
+          if (clazz.isInstance(element)) {
+            downstream.push(element);
+            return false;
+          }
+          return true;
+        };
+    return Gatherer.ofSequential(integrator);
+  }
 
   @Test
-  void filterWithGathererInteger() {
+  void filterWithGathererKeepOnly() {
     var result = ELEMENT_LIST.stream().gather(keepOnly(Div.class)).toList();
     System.out.println("result = " + result);
   }
+  @Test
+  void filterWithGathererKeepOnlyFirst() {
+    var result = ELEMENT_LIST.stream().gather(keepOnlyFirst(Div.class)).toList();
+    System.out.println("result = " + result);
+  }
+  @Test
+  void filterWithStaticHelper() {
+    var result = ELEMENT_LIST.stream().flatMap(HelpClass.keepOnly(Div.class)).toList();
+    System.out.println("result = " + result);
+  }
+  @Test
+  void filterWithMapMulti() {
+    var result = ELEMENT_LIST.stream().mapMulti((Element v1, Consumer<Element> v2) -> {
+      System.out.println("-".repeat(20));
+      System.out.println("v1 = " + v1);
+      System.out.println("v2 = " + v2);
+      if (v1.getClass().isInstance(Div.class)) {
+        v2.accept(v1);
+      }
+    }).toList();
+    System.out.println("result = " + result);
+  }
+
 }
