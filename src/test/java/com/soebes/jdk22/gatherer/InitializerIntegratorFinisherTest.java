@@ -23,8 +23,9 @@ class InitializerIntegratorFinisherTest {
         window.add(element);
         // Until we reach our desired window size,
         // return true to signal that more elements are desired
-        if (window.size() < windowSize)
+        if (window.size() < windowSize) {
           return true;
+        }
         // When the window is full, close it by creating a copy
         var result = List.copyOf(window);
         // Clear the window so the next can be started

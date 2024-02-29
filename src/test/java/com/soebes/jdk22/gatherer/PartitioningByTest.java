@@ -172,7 +172,7 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
             AGE_RANGES.stream()
                 .filter(personInRange(person))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("Person does not fit in any given range person:" + person))
+                .orElseThrow(() -> new IllegalStateException("The Person " + person + " does not fit in any given range."))
         ));
     collect.entrySet()
         .stream()
