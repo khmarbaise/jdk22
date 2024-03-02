@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Gatherer;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 class KeepOnlyTest {
 
   sealed interface Element permits CustomElement, KnownElement { }
@@ -64,16 +66,19 @@ class KeepOnlyTest {
   void filterWithGathererKeepOnly() {
     var result = ELEMENT_LIST.stream().gather(keepOnly(Div.class)).toList();
     System.out.println("result = " + result);
+    assertThat(result).containsExactly(new Div("Div1"), new Div("Div2"));
   }
   @Test
   void filterWithGathererKeepOnlyFirst() {
     var result = ELEMENT_LIST.stream().gather(keepOnlyFirst(Div.class)).toList();
     System.out.println("result = " + result);
+    assertThat(result).containsExactly(new Div("Div1"));
   }
   @Test
   void filterWithStaticHelper() {
     var result = ELEMENT_LIST.stream().flatMap(HelpClass.keepOnly(Div.class)).toList();
     System.out.println("result = " + result);
+    assertThat(result).containsExactly(new Div("Div1"), new Div("Div2"));
   }
   @Test
   void filterWithMapMulti() {
@@ -86,6 +91,7 @@ class KeepOnlyTest {
       }
     }).toList();
     System.out.println("result = " + result);
+    assertThat(result).containsExactly(new Div("Div1"), new Div("Div2"));
   }
 
 }
