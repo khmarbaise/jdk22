@@ -23,11 +23,11 @@ class KeepOnlyTest {
   record Image(String value) implements HtmlElement { }
   record Anchor(String value) implements HtmlElement { }
 
-  record FirstCurstom(String value) implements CustomElement { }
+  record FirstCustom(String value) implements CustomElement { }
 
 
   private static final List<Element> ELEMENT_LIST = List.of(
-      new FirstCurstom("FirstCustom"),
+      new FirstCustom("FirstCustom"),
       new Div("Div1"),
       new Paragraph("P1"),
       new Span("Span1"),
