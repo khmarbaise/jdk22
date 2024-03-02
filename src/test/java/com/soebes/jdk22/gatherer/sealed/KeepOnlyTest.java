@@ -81,7 +81,7 @@ class KeepOnlyTest {
       System.out.println("-".repeat(20));
       System.out.println("v1 = " + v1);
       System.out.println("v2 = " + v2);
-      if (v1.getClass().isInstance(Div.class)) {
+      if (v1 instanceof Div) {
         v2.accept(v1);
       }
     }).toList();
