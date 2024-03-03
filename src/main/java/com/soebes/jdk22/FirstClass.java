@@ -27,4 +27,15 @@ public class FirstClass {
     var bigInteger = BigInteger.valueOf(200L);
     out.println("bigInteger = " + bigInteger);
   }
+
+  public static void main() {
+    out.println("FirstClass.main without parameters");
+  }
+  public static void main(String[] args) {
+    out.println("FirstClass.main");
+  }
+  public static void Main(String[] args) {
+    out.println("FirstClass.Main");
+  }
+
 }
