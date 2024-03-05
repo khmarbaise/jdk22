@@ -65,32 +65,32 @@ class KeepOnlyTest {
   @Test
   void filterWithGathererKeepOnly() {
     var result = ELEMENT_LIST.stream().gather(keepOnly(Div.class)).toList();
-    System.out.println("result = " + result);
+    System.out.printf("result = %s%n", result);
     assertThat(result).containsExactly(new Div("Div1"), new Div("Div2"));
   }
   @Test
   void filterWithGathererKeepOnlyFirst() {
     var result = ELEMENT_LIST.stream().gather(keepOnlyFirst(Div.class)).toList();
-    System.out.println("result = " + result);
+    System.out.printf("result = %s%n", result);
     assertThat(result).containsExactly(new Div("Div1"));
   }
   @Test
   void filterWithStaticHelper() {
     var result = ELEMENT_LIST.stream().flatMap(HelpClass.keepOnly(Div.class)).toList();
-    System.out.println("result = " + result);
+    System.out.printf("result = %s%n", result);
     assertThat(result).containsExactly(new Div("Div1"), new Div("Div2"));
   }
   @Test
   void filterWithMapMulti() {
     var result = ELEMENT_LIST.stream().mapMulti((Element v1, Consumer<Element> v2) -> {
       System.out.println("-".repeat(20));
-      System.out.println("v1 = " + v1);
-      System.out.println("v2 = " + v2);
+      System.out.printf("v1 = %s%n", v1);
+      System.out.printf("v2 = %s%n", v2);
       if (v1 instanceof Div) {
         v2.accept(v1);
       }
     }).toList();
-    System.out.println("result = " + result);
+    System.out.printf("result = %s%n", result);
     assertThat(result).containsExactly(new Div("Div1"), new Div("Div2"));
   }
 
