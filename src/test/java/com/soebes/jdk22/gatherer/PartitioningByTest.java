@@ -25,8 +25,8 @@ import static java.util.function.Predicate.not;
 class PartitioningByTest {
 
   static final List<AgeRange> AGE_RANGES = List.of(
-      new AgeRange(0, 18),
-      new AgeRange(19, 20),
+      new AgeRange(0, 17),
+      new AgeRange(18, 20),
       new AgeRange(21, 29),
       new AgeRange(30, 39),
       new AgeRange(40, 49),
