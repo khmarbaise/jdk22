@@ -159,7 +159,7 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
           entry.getValue()
               .stream()
               .sorted(Comparator.comparing(Person::name))
-              .forEachOrdered(p -> System.out.println("  " + p));
+              .forEachOrdered(p -> System.out.printf("  %s%n", p));
         });
   }
 
