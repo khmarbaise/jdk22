@@ -104,7 +104,8 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
   }
 
   List<Person> convertToPerson(List<Employee> employees) {
-    return employees.stream().map(employee -> new Person(employee.name(), employee.age())).toList();
+    return employees.stream()
+        .map(employee -> new Person(employee.name(), employee.age())).toList();
   }
 
   private final Predicate<String> emptyLine = l -> l.trim().isEmpty();
