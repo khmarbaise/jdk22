@@ -10,22 +10,44 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class KeepOnlyTest {
 
-  sealed interface Element permits CustomElement, KnownElement { }
-  sealed interface KnownElement extends Element { }
-  non-sealed interface CustomElement extends Element { }
-  sealed interface HtmlElement extends KnownElement { }
-  sealed interface InternalElement extends KnownElement { }
+  sealed interface Element permits CustomElement, KnownElement {
+  }
 
-  record Text(String value) implements InternalElement { }
-  record HtmlLiteral(String value) implements InternalElement { }
+  sealed interface KnownElement extends Element {
+  }
 
-  record Div(String value) implements HtmlElement { }
-  record Paragraph(String value) implements HtmlElement { }
-  record Span(String value) implements HtmlElement { }
-  record Image(String value) implements HtmlElement { }
-  record Anchor(String value) implements HtmlElement { }
+  non-sealed interface CustomElement extends Element {
+  }
 
-  record FirstCustom(String value) implements CustomElement { }
+  sealed interface HtmlElement extends KnownElement {
+  }
+
+  sealed interface InternalElement extends KnownElement {
+  }
+
+  record Text(String value) implements InternalElement {
+  }
+
+  record HtmlLiteral(String value) implements InternalElement {
+  }
+
+  record Div(String value) implements HtmlElement {
+  }
+
+  record Paragraph(String value) implements HtmlElement {
+  }
+
+  record Span(String value) implements HtmlElement {
+  }
+
+  record Image(String value) implements HtmlElement {
+  }
+
+  record Anchor(String value) implements HtmlElement {
+  }
+
+  record FirstCustom(String value) implements CustomElement {
+  }
 
 
   private static final List<Element> ELEMENT_LIST = List.of(
@@ -50,6 +72,7 @@ class KeepOnlyTest {
         };
     return Gatherer.ofSequential(integrator);
   }
+
   static <T> Gatherer<T, ?, T> keepOnlyFirst(Class<? extends Element> clazz) {
     Gatherer.Integrator<Void, T, T> integrator =
         (_, element, downstream) -> {
@@ -63,23 +86,33 @@ class KeepOnlyTest {
   }
 
   @Test
-  void filterWithGathererKeepOnly() {
+  void filterWithGathererKeepOnlyDiv() {
     var result = ELEMENT_LIST.stream().gather(keepOnly(Div.class)).toList();
     System.out.printf("result = %s%n", result);
     assertThat(result).containsExactly(new Div("Div1"), new Div("Div2"));
   }
+
+  @Test
+  void filterWithGathererKeepOnlyImage() {
+    var result = ELEMENT_LIST.stream().gather(keepOnly(Image.class)).toList();
+    System.out.printf("result = %s%n", result);
+    assertThat(result).containsExactly(new Image("Image1"));
+  }
+
   @Test
   void filterWithGathererKeepOnlyFirst() {
     var result = ELEMENT_LIST.stream().gather(keepOnlyFirst(Div.class)).toList();
     System.out.printf("result = %s%n", result);
     assertThat(result).containsExactly(new Div("Div1"));
   }
+
   @Test
   void filterWithStaticHelper() {
     var result = ELEMENT_LIST.stream().flatMap(HelpClass.keepOnly(Div.class)).toList();
     System.out.printf("result = %s%n", result);
     assertThat(result).containsExactly(new Div("Div1"), new Div("Div2"));
   }
+
   @Test
   void filterWithMapMulti() {
     var result = ELEMENT_LIST.stream().mapMulti((Element v1, Consumer<Element> v2) -> {
