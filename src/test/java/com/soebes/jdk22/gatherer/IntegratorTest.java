@@ -16,7 +16,6 @@ class IntegratorTest {
 
   // <A, T, R>
   // A state, T element, Downstream<? super R> downstream
-
   private static final Gatherer.Integrator<Void, Integer, ? super Integer> noOp =
       //We could use "_" instead of "state"!
       (_, element, downstream) -> {
