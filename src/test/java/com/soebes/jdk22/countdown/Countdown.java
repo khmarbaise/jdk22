@@ -90,9 +90,9 @@ public record Countdown(List<Integer> ints, int target) {
     }
   }
 
-  record Add(Element e1, Element e2, int result) implements Operation {
-    public Add(Element e1, Element e2) {
-      this(e1, e2, resolve(e1) + resolve(e2));
+  record Add(Element lhs, Element rhs, int result) implements Operation {
+    public Add(Element lhs, Element rhs) {
+      this(lhs, rhs, resolve(lhs) + resolve(rhs));
     }
   }
 
