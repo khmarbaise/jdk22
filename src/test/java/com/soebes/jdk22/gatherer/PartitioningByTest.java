@@ -100,7 +100,7 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
   List<Employee> convertToEmployee(List<Line> lines) {
     return lines.stream()
         .map(this::convertLineIntoEmployee)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   List<Person> convertToPerson(List<Employee> employees) {
@@ -146,15 +146,15 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
           var aRange = AGE_RANGES.stream()
               .filter(personInRange(person))
               .findFirst()
-              .orElseThrow(() -> new IllegalStateException("Person does not fit in any given range person:" + person));
-          acc.computeIfAbsent(aRange, (_) -> new ArrayList<>()).add(person);
+              .orElseThrow(() -> new IllegalStateException("Person does not fit in any given range person:%s".formatted(person)));
+          acc.computeIfAbsent(aRange, _ -> new ArrayList<>()).add(person);
         },
         HashMap::putAll);
 
     ageRangeList.entrySet()
         .stream()
         .sorted(Map.Entry.comparingByKey(AgeRange.comparator()))
-        .forEach((entry) -> {
+        .forEach(entry -> {
           System.out.println(entry.getKey());
           entry.getValue()
               .stream()
@@ -173,7 +173,7 @@ E02387,Emily Davis,Sr. Manger,IT,Research & Development,Female,Black,55,4/8/2016
             AGE_RANGES.stream()
                 .filter(personInRange(person))
                 .findFirst()
-                .orElseThrow(() -> new IllegalStateException("The Person " + person + " does not fit in any given range."))
+                .orElseThrow(() -> new IllegalStateException("The Person %s does not fit in any given range.".formatted(person)))
         ));
     collect.entrySet()
         .stream()
