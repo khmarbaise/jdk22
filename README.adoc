@@ -52,3 +52,4 @@ and a comma-separated values format (.csv).
 * Idee:
 ** partitioningBy(... mit Array an Bedingungen Groupierung anhand von Gruppen (z.B. Alter (von-bis)))
 ** Index mit in Stream aufnehmen?? mal sehen, ob das geht?
+
