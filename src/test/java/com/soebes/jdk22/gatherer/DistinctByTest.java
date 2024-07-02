@@ -14,10 +14,6 @@ import java.util.stream.Stream;
 
 class DistinctByTest {
 
-  default int xxx() {
-    return 0;
-  }
-
   @Test
   void first() {
 //    var result = Stream.of("foo", "bar", "baz", "quux")
