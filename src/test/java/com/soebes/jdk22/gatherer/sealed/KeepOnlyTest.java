@@ -10,44 +10,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class KeepOnlyTest {
 
-  sealed interface Element permits CustomElement, KnownElement {
-  }
-
-  sealed interface KnownElement extends Element {
-  }
-
-  non-sealed interface CustomElement extends Element {
-  }
-
-  sealed interface HtmlElement extends KnownElement {
-  }
-
-  sealed interface InternalElement extends KnownElement {
-  }
-
-  record Text(String value) implements InternalElement {
-  }
-
-  record HtmlLiteral(String value) implements InternalElement {
-  }
-
-  record Div(String value) implements HtmlElement {
-  }
-
-  record Paragraph(String value) implements HtmlElement {
-  }
-
-  record Span(String value) implements HtmlElement {
-  }
-
-  record Image(String value) implements HtmlElement {
-  }
-
-  record Anchor(String value) implements HtmlElement {
-  }
-
-  record FirstCustom(String value) implements CustomElement {
-  }
+  sealed interface Element permits CustomElement, KnownElement {}
+  sealed interface KnownElement extends Element {}
+  non-sealed interface CustomElement extends Element {}
+  sealed interface HtmlElement extends KnownElement {}
+  sealed interface InternalElement extends KnownElement {}
+  record Text(String value) implements InternalElement {}
+  record HtmlLiteral(String value) implements InternalElement {}
+  record Div(String value) implements HtmlElement {}
+  record Paragraph(String value) implements HtmlElement {}
+  record Span(String value) implements HtmlElement {}
+  record Image(String value) implements HtmlElement {}
+  record Anchor(String value) implements HtmlElement {}
+  record FirstCustom(String value) implements CustomElement {}
 
 
   private static final List<Element> ELEMENT_LIST = List.of(
@@ -59,29 +34,26 @@ class KeepOnlyTest {
       new Anchor("https://google.de"),
       new Div("Div2"),
       new HtmlLiteral("Literal1"),
-      new Text("Text1")
-  );
+      new Text("Text1"));
 
   static <T> Gatherer<T, ?, T> keepOnly(Class<? extends Element> clazz) {
-    Gatherer.Integrator<Void, T, T> integrator =
-        (_, element, downstream) -> {
-          if (clazz.isInstance(element)) {
-            downstream.push(element);
-          }
-          return true;
-        };
+    Gatherer.Integrator<Void, T, T> integrator = (_, element, downstream) -> {
+      if (clazz.isInstance(element)) {
+        downstream.push(element);
+      }
+      return true;
+    };
     return Gatherer.ofSequential(integrator);
   }
 
   static <T> Gatherer<T, ?, T> keepOnlyFirst(Class<? extends Element> clazz) {
-    Gatherer.Integrator<Void, T, T> integrator =
-        (_, element, downstream) -> {
-          if (clazz.isInstance(element)) {
-            downstream.push(element);
-            return false;
-          }
-          return true;
-        };
+    Gatherer.Integrator<Void, T, T> integrator = (_, element, downstream) -> {
+      if (clazz.isInstance(element)) {
+        downstream.push(element);
+        return false;
+      }
+      return true;
+    };
     return Gatherer.ofSequential(integrator);
   }
 
