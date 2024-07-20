@@ -77,7 +77,7 @@ class DistinctByTest {
     //
     Gatherer.Integrator<HashMap<A, List<T>>, T, T> integrator = (state, element, downstream) -> {
       A apply = classifier.apply(element);
-      state.computeIfAbsent(apply, (_) -> new ArrayList<>()).add(element);
+      state.computeIfAbsent(apply, _ -> new ArrayList<>()).add(element);
       if (state.get(apply).size() == 1) {
         downstream.push(element);
       }
