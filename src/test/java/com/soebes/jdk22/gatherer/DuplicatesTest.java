@@ -172,19 +172,19 @@ class DuplicatesTest {
 
   // Gatherer<? super T, ?, R> gatherer
   static <ELEMENT> Gatherer<? super ELEMENT, ?, ELEMENT> duplicates() {
-    Supplier<HashMap<ELEMENT, Integer>> initializer = HashMap::new;
+    Supplier<Map<ELEMENT, Integer>> initializer = HashMap::new;
     //
-    Gatherer.Integrator<HashMap<ELEMENT, Integer>, ELEMENT, ELEMENT> integrator = (state, element, _) -> {
+    Gatherer.Integrator<Map<ELEMENT, Integer>, ELEMENT, ELEMENT> integrator = (state, element, _) -> {
       state.put(element, state.getOrDefault(element, 0) + 1);
       return true;
     };
     //
-    BinaryOperator<HashMap<ELEMENT, Integer>> combiner = (s1, s2) -> {
+    BinaryOperator<Map<ELEMENT, Integer>> combiner = (s1, s2) -> {
       s1.forEach((k, v) -> s2.put(k, v + s2.getOrDefault(k, 0)));
       return s2;
     };
     //
-    BiConsumer<HashMap<ELEMENT, Integer>, Gatherer.Downstream<? super ELEMENT>> finisher = (state, downstream) -> {
+    BiConsumer<Map<ELEMENT, Integer>, Gatherer.Downstream<? super ELEMENT>> finisher = (state, downstream) -> {
       state.forEach((k, v) -> {
         if (v >= 2) {
           downstream.push(k);
